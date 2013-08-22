@@ -17,7 +17,7 @@
 	],
 	"support": {
 		"email": "filip@prochazka.su",
-		"issues": "https://github.com/kdyby/validation/issues"
+		"issues": "https://github.com/kdyby/validator/issues"
 	},
 	"require": {
 		"php": ">=5.3.2",
