@@ -1,0 +1,21 @@
+php:
+	date.timezone: Europe/Prague
+
+
+extensions:
+	annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	translation: Kdyby\Translation\DI\TranslationExtension
+	validator: Kdyby\Validator\DI\ValidatorExtension
+
+
+nette:
+	security:
+		frames: null
+
+	session:
+		autoStart: false
+
+
+services:
+	cacheStorage:
+		class: Nette\Caching\Storages\MemoryStorage

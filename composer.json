@@ -1,16 +1,24 @@
 {
-	"name": "arachne/validation",
+	"name": "kdyby/validator",
 	"type": "library",
-	"keywords": [ "nette", "arachne", "symfony", "validation" ],
-	"homepage": "http://enumag.cz",
-	"license": [ "BSD-3-Clause", "GPL-2.0", "GPL-3.0" ],
+	"description": "Integration of Symfony/Validator into Nette Framework",
+	"keywords": ["nette", "kdyby", "validation"],
+	"homepage": "http://kdyby.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
 		{
 			"name": "Jáchym Toušek",
-			"homepage": "http://m33.cz/",
 			"email": "enumag@gmail.com"
+		},
+		{
+			"name": "Filip Procházka",
+			"homepage": "http://filip-prochazka.com"
 		}
 	],
+	"support": {
+		"email": "filip@prochazka.su",
+		"issues": "https://github.com/kdyby/validation/issues"
+	},
 	"require": {
 		"php": ">=5.3.2",
 		"nette/nette": "@dev",
@@ -18,9 +26,12 @@
 		"kdyby/annotations": "@dev",
 		"kdyby/translation": "@dev"
 	},
+	"require-dev": {
+		"nette/tester": "@dev"
+	},
 	"autoload": {
 		"psr-0": {
-			"Arachne\\Validation": "src/"
+			"Kdyby\\Validator": "src/"
 		}
 	}
 }
