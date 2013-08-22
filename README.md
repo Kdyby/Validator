@@ -1,27 +1,27 @@
-Kdyby/Translation [![Build Status](https://secure.travis-ci.org/Kdyby/Translation.png?branch=master)](http://travis-ci.org/Kdyby/Translation)
+Kdyby/Validator [![Build Status](https://secure.travis-ci.org/Kdyby/Validator.png?branch=master)](http://travis-ci.org/Kdyby/Validator)
 ===========================
 
 
 Requirements
 ------------
 
-Kdyby/Translation requires PHP 5.3.2 or higher.
+Kdyby/Validator requires PHP 5.3.2 or higher.
 
 - [Nette Framework 2.0.x](https://github.com/nette/nette)
-- [Symfony Translation 2.2.x](https://github.com/symfony/translation)
+- [Symfony Validator 2.2.x](https://github.com/symfony/Validator)
 - [Symfony Config 2.2.x](https://github.com/symfony/config)
 
 
 Installation
 ------------
 
-The best way to install Kdyby/Translation is using  [Composer](http://getcomposer.org/):
+The best way to install Kdyby/Validator is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require kdyby/translation:@dev
+$ composer require kdyby/validator:@dev
 ```
 
 
 -----
 
-Homepage [http://www.kdyby.org](http://www.kdyby.org) and repository [http://github.com/kdyby/Translation](http://github.com/kdyby/Translation).
+Homepage [http://www.kdyby.org](http://www.kdyby.org) and repository [http://github.com/kdyby/Validator](http://github.com/kdyby/validator).
