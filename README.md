@@ -8,8 +8,8 @@ Requirements
 Kdyby/Validator requires PHP 5.3.2 or higher.
 
 - [Nette Framework 2.0.x](https://github.com/nette/nette)
-- [Symfony Validator 2.2.x](https://github.com/symfony/Validator)
-- [Symfony Config 2.2.x](https://github.com/symfony/config)
+- [Kdyby/Validator](https://github.com/Kdyby/Validator)
+- [Kdyby/Translation](https://github.com/Kdyby/Translation)
 
 
 Installation
