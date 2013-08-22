@@ -20,7 +20,7 @@ and [Kdyby/Translation](https://github.com/Kdyby/Translation) extensions using y
 extensions:
 	annotations: Kdyby\Annotations\DI\AnnotationsExtension
 	translation: Kdyby\Translation\DI\TranslationExtension
-	Validator: Kdyby\Validator\DI\ValidatorExtension
+	validator: Kdyby\Validator\DI\ValidatorExtension
 ```
 
 See also the documentation of [Kdyby/Annotations](https://github.com/Kdyby/Annotations/blob/master/docs/en/index.md),
