@@ -61,7 +61,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 	public static function register(Nette\Configurator $config)
 	{
 		$config->onCompile[] = function ($config, Compiler $compiler) {
-			$compiler->addExtension('validation', new RedisExtension());
+			$compiler->addExtension('validator', new ValidatorExtension());
 		};
 	}
 
