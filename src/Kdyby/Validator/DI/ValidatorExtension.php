@@ -30,7 +30,7 @@ if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator'
 
 /**
  * @author Jáchym Toušek
- * @author Michael Moravec  
+ * @author Michael Moravec
  * @author Filip Procházka <filip@prochazka.su>
  */
 class ValidatorExtension extends Nette\DI\CompilerExtension
@@ -49,7 +49,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 				new Nette\DI\Statement('Kdyby\Validator\Caching\Cache', array(
 					'@Nette\Caching\IStorage',
 					'Symfony.Validator'
-				)),
+				))
 			));
 
 		$builder->addDefinition($this->prefix('validator'))
