@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the Kdyby (http://www.kdyby.org)
+ *
+ * Copyright (c) 2008 Filip Procházka (filip@prochazka.su)
+ *
+ * For the full copyright and license information, please view the file license.md that was distributed with this source code.
+ */
+
 namespace Kdyby\Validator\Caching;
 
 use Nette;
@@ -8,9 +16,11 @@ use Nette\Object;
 use Symfony\Component\Validator\Mapping\Cache\CacheInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
+
+
 /**
  * @author Michael Moravec
- * @author Jáchym Toušek 
+ * @author Jáchym Toušek
  */
 class Cache extends Object implements CacheInterface
 {
@@ -22,10 +32,14 @@ class Cache extends Object implements CacheInterface
 	 */
 	private $cache;
 
+
+
 	public function __construct(Nette\Caching\IStorage $storage, $namespace = self::CACHE_NS)
 	{
 		$this->cache = new NCache($storage, $namespace);
 	}
+
+
 
 	/**
 	 * {@inheritdoc}
@@ -35,6 +49,8 @@ class Cache extends Object implements CacheInterface
 		return isset($this->cache[$class]);
 	}
 
+
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -42,6 +58,8 @@ class Cache extends Object implements CacheInterface
 	{
 		return $this->has($class) ? $this->cache[$class] : FALSE;
 	}
+
+
 
 	/**
 	 * {@inheritdoc}
