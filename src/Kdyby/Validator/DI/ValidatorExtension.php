@@ -30,6 +30,7 @@ if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator'
 
 /**
  * @author Jáchym Toušek
+ * @author Michael Moravec  
  * @author Filip Procházka <filip@prochazka.su>
  */
 class ValidatorExtension extends Nette\DI\CompilerExtension
@@ -39,21 +40,21 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('loader'))
-				->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
-				->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader');
-
-		$builder->addDefinition($this->prefix('metadataFactory'))
-				->setClass('Symfony\Component\Validator\MetadataFactoryInterface')
-				->setFactory('Symfony\Component\Validator\Mapping\ClassMetadataFactory');
-
-		$builder->addDefinition($this->prefix('validatorFactory'))
-				->setClass('Symfony\Component\Validator\ConstraintValidatorFactoryInterface')
-				->setFactory('Symfony\Component\Validator\ConstraintValidatorFactory');
+		$builder->addDefinition($this->prefix('validatorBuilder'))
+			->setClass('Symfony\Component\Validator\ValidatorBuilderInterface')
+			->setFactory('Symfony\Component\Validator\ValidatorBuilder')
+			->addSetup('enableAnnotationMapping')
+			->addSetup('setTranslator')
+			->addSetup('setMetadataCache', array(
+				new Nette\DI\Statement('Kdyby\Validator\Caching\Cache', array(
+					'@Nette\Caching\IStorage',
+					'Symfony.Validator'
+				)),
+			));
 
 		$builder->addDefinition($this->prefix('validator'))
-				->setClass('Symfony\Component\Validator\ValidatorInterface')
-				->setFactory('Symfony\Component\Validator\Validator');
+			->setClass('Symfony\Component\Validator\ValidatorInterface')
+			->setFactory($this->prefix('@validatorBuilder') . '::getValidator');
 	}
 
 
