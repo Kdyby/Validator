@@ -54,7 +54,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\ValidatorInterface')
-			->setFactory($this->prefix('@validatorBuilder') . '::getValidator');
+			->setFactory('@Symfony\Component\Validator\ValidatorBuilderInterface::getValidator');
 	}
 
 
