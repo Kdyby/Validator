@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the file license.md that was distributed with this source code.
  */
 
-namespace Kdyby\Validator\Mapping\Loader;
+namespace Kdyby\Validator\Mapping;
 
 use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
 use Symfony\Component\Validator\Mapping\Loader\LoaderChain as BaseLoaderChain;

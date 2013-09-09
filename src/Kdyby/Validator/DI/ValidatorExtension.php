@@ -44,7 +44,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('loader'))
 			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
-			->setFactory('Kdyby\Validator\Mapping\Loader\LoaderChain');
+			->setFactory('Kdyby\Validator\Mapping\LoaderChain');
 
 		$builder->addDefinition($this->prefix('annotationsLoader'))
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
