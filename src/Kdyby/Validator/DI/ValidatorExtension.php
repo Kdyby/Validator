@@ -48,7 +48,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('annotationsLoader'))
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
-			->setAutowired(FALSE)
 			->addTag(self::TAG_LOADER);
 
 		$builder->addDefinition($this->prefix('metadataFactory'))
@@ -70,6 +69,8 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 
 		$loader = $builder->getDefinition($this->prefix('loader'));
 		foreach (array_keys($builder->findByTag(self::TAG_LOADER)) as $service) {
+			$builder->getDefinition($service)
+				->setAutowired(FALSE);
 			$loader->addSetup('addLoader', array('@' . $service));
 		}
 	}
