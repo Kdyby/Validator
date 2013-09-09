@@ -44,7 +44,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('loader'))
 			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
-			->setFactory('Kdyby\Validator\Mapping\LoaderChain');
+			->setFactory('Symfony\Component\Validator\Mapping\Loader\LoaderChain');
 
 		$builder->addDefinition($this->prefix('annotationsLoader'))
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
@@ -67,12 +67,14 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$loader = $builder->getDefinition($this->prefix('loader'));
+		$loaders = array();
 		foreach (array_keys($builder->findByTag(self::TAG_LOADER)) as $service) {
 			$builder->getDefinition($service)
 				->setAutowired(FALSE);
-			$loader->addSetup('addLoader', array('@' . $service));
+			$loaders[] = '@' . $service;
 		}
+		$builder->getDefinition($this->prefix('loader'))
+			->setArguments(array($loaders));
 	}
 
 	public static function register(Nette\Configurator $config)
