@@ -23,9 +23,9 @@ class LoaderChain extends BaseLoaderChain
 		parent::__construct($loaders);
 	}
 
-    public function addLoader(LoaderInterface $loader)
-    {
-        $this->loaders[] = $loader;
-    }
+	public function addLoader(LoaderInterface $loader)
+	{
+		$this->loaders[] = $loader;
+	}
 
 }
