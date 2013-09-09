@@ -37,6 +37,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 {
 
 	const TAG_LOADER = 'kdyby.validator.loader';
+	const TAG_INITIALIZER = 'kdyby.validator.initializer';
 
 	public function loadConfiguration()
 	{
@@ -75,6 +76,13 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 		}
 		$builder->getDefinition($this->prefix('loader'))
 			->setArguments(array($loaders));
+		
+		$initializers = array();
+		foreach (array_keys($builder->findByTag(self::TAG_INITIALIZER)) as $service) {
+			$initializers[] = '@' . $service;
+		}
+		$builder->getDefinition($this->prefix('validator'))
+			->setArguments(array('objectInitializers' => $initializers));
 	}
 
 	public static function register(Nette\Configurator $config)
