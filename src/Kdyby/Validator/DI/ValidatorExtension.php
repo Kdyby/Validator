@@ -36,28 +36,43 @@ if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator'
 class ValidatorExtension extends Nette\DI\CompilerExtension
 {
 
+	const TAG_LOADER = 'kdyby.validator.loader';
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('validatorBuilder'))
-			->setClass('Symfony\Component\Validator\ValidatorBuilderInterface')
-			->setFactory('Symfony\Component\Validator\ValidatorBuilder')
-			->addSetup('enableAnnotationMapping')
-			->addSetup('setTranslator')
-			->addSetup('setMetadataCache', array(
-				new Nette\DI\Statement('Kdyby\Validator\Caching\Cache', array(
-					'@Nette\Caching\IStorage',
-					'Symfony.Validator'
-				))
-			));
+		$builder->addDefinition($this->prefix('loader'))
+			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
+			->setFactory('Kdyby\Validator\Mapping\Loader\LoaderChain');
+
+		$builder->addDefinition($this->prefix('annotationsLoader'))
+			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
+			->setAutowired(FALSE)
+			->addTag(self::TAG_LOADER);
+
+		$builder->addDefinition($this->prefix('metadataFactory'))
+			->setClass('Symfony\Component\Validator\MetadataFactoryInterface')
+			->setFactory('Symfony\Component\Validator\Mapping\ClassMetadataFactory');
+
+		$builder->addDefinition($this->prefix('constraintValidatorFactory'))
+			->setClass('Symfony\Component\Validator\ConstraintValidatorFactoryInterface')
+			->setFactory('Symfony\Component\Validator\ConstraintValidatorFactory');
 
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\ValidatorInterface')
-			->setFactory('@Symfony\Component\Validator\ValidatorBuilderInterface::getValidator');
+			->setFactory('Symfony\Component\Validator\Validator');
 	}
 
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
 
+		$loader = $builder->getDefinition($this->prefix('loader'));
+		foreach (array_keys($builder->findByTag(self::TAG_LOADER)) as $service) {
+			$loader->addSetup('addLoader', array('@' . $service));
+		}
+	}
 
 	public static function register(Nette\Configurator $config)
 	{
