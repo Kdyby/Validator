@@ -11,9 +11,9 @@
 namespace Kdyby\Validator\DI;
 
 use Kdyby;
+use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
-use Nette\DI\ContainerBuilder;
 
 
 
@@ -33,7 +33,7 @@ if (isset(Nette\Loaders\NetteLoader::getInstance()->renamed['Nette\Configurator'
  * @author Michael Moravec
  * @author Filip Procházka <filip@prochazka.su>
  */
-class ValidatorExtension extends Nette\DI\CompilerExtension
+class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslationProvider
 {
 
 	const TAG_LOADER = 'kdyby.validator.loader';
@@ -64,6 +64,8 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 			->setFactory('Symfony\Component\Validator\Validator');
 	}
 
+
+
 	public function beforeCompile()
 	{
 		$builder = $this->getContainerBuilder();
@@ -76,7 +78,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 		}
 		$builder->getDefinition($this->prefix('loader'))
 			->setArguments(array($loaders));
-		
+
 		$initializers = array();
 		foreach (array_keys($builder->findByTag(self::TAG_INITIALIZER)) as $service) {
 			$initializers[] = '@' . $service;
@@ -84,6 +86,24 @@ class ValidatorExtension extends Nette\DI\CompilerExtension
 		$builder->getDefinition($this->prefix('validator'))
 			->setArguments(array('objectInitializers' => $initializers));
 	}
+
+
+
+	/**
+	 * Return array of directories, that contain resources for translator.
+	 *
+	 * @return string[]
+	 */
+	public function getTranslationResources()
+	{
+		$validatorClass = new \ReflectionClass('Symfony\Component\Validator\Validator');
+
+		return array(
+			dirname($validatorClass->getFileName()) . '/Resources/translations',
+		);
+	}
+
+
 
 	public static function register(Nette\Configurator $config)
 	{
