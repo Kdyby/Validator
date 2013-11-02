@@ -14,6 +14,7 @@ use Kdyby;
 use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
+use Nette\Utils\Validators;
 
 
 
@@ -39,9 +40,19 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	const TAG_LOADER = 'kdyby.validator.loader';
 	const TAG_INITIALIZER = 'kdyby.validator.initializer';
 
+	/**
+	 * @var array
+	 */
+	public $defaults = array(
+		'cache' => 'Kdyby\Validator\Caching\Cache'
+	);
+
+
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->getConfig($this->defaults);
 
 		$builder->addDefinition($this->prefix('loader'))
 			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
@@ -51,9 +62,20 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
 			->addTag(self::TAG_LOADER);
 
+		$cacheFactory = self::filterArgs($config['cache']);
+		if (!class_exists($cacheFactory[0]->entity) || !in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->entity), TRUE)) {
+			throw new Nette\Utils\AssertionException(
+				'Expected implementation of Symfony\Component\Validator\Mapping\Cache\CacheInterface, ' .
+				'but ' . $cacheFactory[0]->entity  . ' given.'
+			);
+		}
+		$builder->addDefinition($this->prefix('cache'))
+			->setClass('Symfony\Component\Validator\Mapping\Cache\CacheInterface')
+			->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
+
 		$builder->addDefinition($this->prefix('metadataFactory'))
 			->setClass('Symfony\Component\Validator\MetadataFactoryInterface')
-			->setFactory('Symfony\Component\Validator\Mapping\ClassMetadataFactory');
+			->setFactory('Symfony\Component\Validator\Mapping\ClassMetadataFactory', array($this->prefix('@loader'), $this->prefix('@cache')));
 
 		$builder->addDefinition($this->prefix('constraintValidatorFactory'))
 			->setClass('Symfony\Component\Validator\ConstraintValidatorFactoryInterface')
@@ -101,6 +123,17 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		return array(
 			dirname($validatorClass->getFileName()) . '/Resources/translations',
 		);
+	}
+
+
+
+	/**
+	 * @param string|\stdClass $statement
+	 * @return Nette\DI\Statement[]
+	 */
+	private static function filterArgs($statement)
+	{
+		return Nette\DI\Compiler::filterArguments(array(is_string($statement) ? new Nette\DI\Statement($statement) : $statement));
 	}
 
 
