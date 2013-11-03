@@ -79,7 +79,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 
 		$builder->addDefinition($this->prefix('constraintValidatorFactory'))
 			->setClass('Symfony\Component\Validator\ConstraintValidatorFactoryInterface')
-			->setFactory('Symfony\Component\Validator\ConstraintValidatorFactory');
+			->setFactory('Kdyby\Validator\ConstraintValidatorFactory');
 
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\ValidatorInterface')

@@ -13,8 +13,8 @@ namespace KdybyTests\Validation;
 use Kdyby;
 use Nette;
 use Symfony;
+use Symfony\Component\Validator\Constraints as Assert;
 use Tester;
-use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -44,9 +44,36 @@ class ExtensionTest extends Tester\TestCase
 	public function testFunctionality()
 	{
 		$container = $this->createContainer();
+
+		/** @var Symfony\Component\Validator\ValidatorInterface $validator */
 		$validator = $container->getByType('Symfony\Component\Validator\ValidatorInterface');
-		Assert::true($validator instanceof Symfony\Component\Validator\Validator);
+		Tester\Assert::true($validator instanceof Symfony\Component\Validator\Validator);
+
+		$article = new ArticleMock();
+
+		/** @var Symfony\Component\Validator\ConstraintViolationInterface[] $violations */
+		$violations = $validator->validate($article);
+		Tester\Assert::same(1, count($violations));
+		Tester\Assert::same('This value should not be null.', $violations[0]->getMessage());
+
+		$article->title = "Nette Framework + Symfony/Validator";
+
+		/** @var Symfony\Component\Validator\ConstraintViolationInterface[] $violations */
+		$violations = $validator->validate($article);
+		Tester\Assert::same(0, count($violations));
 	}
+
+}
+
+
+class ArticleMock extends Nette\Object
+{
+
+	/**
+	 * @Assert\NotNull()
+	 * @var string
+	 */
+	public $title;
 
 }
 
