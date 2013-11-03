@@ -84,20 +84,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\ValidatorInterface')
 			->setFactory('Symfony\Component\Validator\Validator');
-
-		$this->loadValidators();
-	}
-
-
-
-	protected function loadValidators()
-	{
-		$builder = $this->getContainerBuilder();
-
-		foreach ($this->loadFromFile(__DIR__ . '/validators.neon') as $i => $validator) {
-			$builder->addDefinition($this->prefix('validator.' . $i))
-				->setClass($validator);
-		}
 	}
 
 
