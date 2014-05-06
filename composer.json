@@ -31,7 +31,6 @@
 		"kdyby/annotations": "~2.0@dev",
 		"kdyby/translation": "~1.2@dev"
 	},
-	"minimum-stability": "RC",
 	"require-dev": {
 		"nette/tester": "@dev"
 	},
