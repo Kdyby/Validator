@@ -52,7 +52,8 @@
 		"kdyby/translation": "~2.0@dev"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"nette/tester": "@dev",
+		"jakub-onderka/php-parallel-lint": "~0.6"
 	},
 	"autoload": {
 		"psr-0": {
