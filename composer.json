@@ -39,5 +39,10 @@
 		"psr-0": {
 			"Kdyby\\Validator": "src/"
 		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "0.1-dev"
+		}
 	}
 }
