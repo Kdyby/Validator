@@ -2,7 +2,7 @@ Kdyby/Validator
 ======
 
 [![Build Status](https://travis-ci.org/Kdyby/Validator.svg?branch=master)](https://travis-ci.org/Kdyby/Validator)
-[![Downloads this Month](https://img.shields.io/packagist/dm/Kdyby/Validator.svg)](https://packagist.org/packages/Kdyby/Validator)
+[![Downloads this Month](https://img.shields.io/packagist/dm/kdyby/validator.svg)](https://packagist.org/packages/kdyby/validator)
 [![Latest stable](https://img.shields.io/packagist/v/kdyby/validator.svg)](https://packagist.org/packages/kdyby/validator)
 
 
