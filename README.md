@@ -1,5 +1,9 @@
-Kdyby/Validator [![Build Status](https://secure.travis-ci.org/Kdyby/Validator.png?branch=master)](http://travis-ci.org/Kdyby/Validator)
-===========================
+Kdyby/Validator
+======
+
+[![Build Status](https://travis-ci.org/Kdyby/Validator.svg?branch=nette-2.1)](https://travis-ci.org/Kdyby/Validator)
+[![Downloads this Month](https://img.shields.io/packagist/dm/kdyby/validator.svg)](https://packagist.org/packages/kdyby/validator)
+[![Latest stable](https://img.shields.io/packagist/v/kdyby/validator.svg)](https://packagist.org/packages/kdyby/validator)
 
 
 Requirements
@@ -18,8 +22,14 @@ Installation
 The best way to install Kdyby/Validator is using  [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require kdyby/validator:@dev
+$ composer require kdyby/validator:dev-nette-2.1
 ```
+
+
+Documentation
+------------
+
+Lear more in the [documentation](https://github.com/Kdyby/Validator/blob/nette-2.1/docs/en/index.md).
 
 
 -----
