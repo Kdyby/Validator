@@ -29,7 +29,7 @@ $ composer require kdyby/validator:@dev
 Documentation
 ------------
 
-Lear more in the [documentation](https://github.com/Kdyby/Validator/blob/master/docs/en/index.md).
+Learn more in the [documentation](https://github.com/Kdyby/Validator/blob/master/docs/en/index.md).
 
 
 -----
