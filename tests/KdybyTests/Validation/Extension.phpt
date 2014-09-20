@@ -45,9 +45,9 @@ class ExtensionTest extends Tester\TestCase
 	{
 		$container = $this->createContainer();
 
-		/** @var Symfony\Component\Validator\ValidatorInterface $validator */
-		$validator = $container->getByType('Symfony\Component\Validator\ValidatorInterface');
-		Tester\Assert::true($validator instanceof Symfony\Component\Validator\Validator);
+		/** @var Symfony\Component\Validator\Validator\ValidatorInterface $validator */
+		$validator = $container->getByType('Symfony\Component\Validator\Validator\ValidatorInterface');
+		Tester\Assert::true($validator instanceof Symfony\Component\Validator\Validator\RecursiveValidator);
 
 		$article = new ArticleMock();
 
