@@ -38,5 +38,10 @@
 
 		"nette/tester": "@dev",
 		"jakub-onderka/php-parallel-lint": "~0.6"
+	},
+	"autoload": {
+		"psr-0": {
+		  "Kdyby\\Validator": "src/"
+		}
 	}
 }
