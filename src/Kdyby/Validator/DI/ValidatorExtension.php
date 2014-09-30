@@ -44,7 +44,8 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 * @var array
 	 */
 	public $defaults = array(
-		'cache' => 'Kdyby\Validator\Caching\Cache'
+		'cache' => 'Kdyby\Validator\Caching\Cache',
+		'translationDomain' => NULL,
 	);
 
 
@@ -74,16 +75,21 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
 
 		$builder->addDefinition($this->prefix('metadataFactory'))
-			->setClass('Symfony\Component\Validator\MetadataFactoryInterface')
-			->setFactory('Symfony\Component\Validator\Mapping\ClassMetadataFactory', array($this->prefix('@loader'), $this->prefix('@cache')));
+			->setClass('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')
+			->setFactory('Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory')
+			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('constraintValidatorFactory'))
 			->setClass('Symfony\Component\Validator\ConstraintValidatorFactoryInterface')
 			->setFactory('Kdyby\Validator\ConstraintValidatorFactory');
 
+		$builder->addDefinition($this->prefix('contextFactory'))
+			->setClass('Symfony\Component\Validator\Context\ExecutionContextFactoryInterface')
+			->setFactory('Symfony\Component\Validator\Context\ExecutionContextFactory', array('translationDomain' => $config['translationDomain']));
+
 		$builder->addDefinition($this->prefix('validator'))
-			->setClass('Symfony\Component\Validator\ValidatorInterface')
-			->setFactory('Symfony\Component\Validator\Validator');
+			->setClass('Symfony\Component\Validator\Validator\ValidatorInterface')
+			->setFactory('Symfony\Component\Validator\Validator\RecursiveValidator');
 	}
 
 
@@ -106,7 +112,10 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			$initializers[] = '@' . $service;
 		}
 		$builder->getDefinition($this->prefix('validator'))
-			->setArguments(array('objectInitializers' => $initializers));
+			->setArguments(array(
+				'metadataFactory' => $this->prefix('@metadataFactory'),
+				'objectInitializers' => $initializers,
+			));
 	}
 
 
