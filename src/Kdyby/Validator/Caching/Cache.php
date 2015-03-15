@@ -46,7 +46,7 @@ class Cache extends Object implements CacheInterface
 	 */
 	public function has($class)
 	{
-		return isset($this->cache[$class]);
+		return $this->cache->load($class) !== NULL;
 	}
 
 
@@ -56,7 +56,7 @@ class Cache extends Object implements CacheInterface
 	 */
 	public function read($class)
 	{
-		return $this->has($class) ? $this->cache[$class] : FALSE;
+		return $this->has($class) ? $this->cache->load($class) : FALSE;
 	}
 
 
@@ -66,7 +66,7 @@ class Cache extends Object implements CacheInterface
 	 */
 	public function write(ClassMetadata $metadata)
 	{
-		$this->cache[$metadata->getClassName()] = $metadata;
+		$this->cache->save($metadata->getClassName(), $metadata);
 	}
 
 }

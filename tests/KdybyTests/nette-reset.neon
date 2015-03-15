@@ -9,14 +9,6 @@ common:
 		validator: Kdyby\Validator\DI\ValidatorExtension
 
 
-	nette:
-		security:
-			frames: null
-
-		session:
-			autoStart: false
-
-
 	services:
 		cacheStorage:
 			class: Nette\Caching\Storages\MemoryStorage
