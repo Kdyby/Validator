@@ -116,7 +116,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 */
 	public function getTranslationResources()
 	{
-		$validatorClass = new \ReflectionClass('Symfony\Component\Validator\Validator');
+		$validatorClass = new \ReflectionClass('Symfony\Component\Validator\Constraint');
 
 		return array(
 			dirname($validatorClass->getFileName()) . '/Resources/translations',
