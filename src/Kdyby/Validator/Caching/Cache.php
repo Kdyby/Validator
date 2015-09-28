@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @author Michael Moravec
  * @author Jáchym Toušek
+ * @deprecated Use Symfony\Component\Validator\Mapping\Cache\DoctrineCache and kdyby/doctrine-cache instead.
  */
 class Cache extends Object implements CacheInterface
 {

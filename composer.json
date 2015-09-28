@@ -29,6 +29,7 @@
 
 		"symfony/validator": ">=2.5.3",
 		"kdyby/annotations": "~2.1@dev",
+		"kdyby/doctrine-cache": "~2.3@dev",
 		"kdyby/translation": "~2.0@dev"
 	},
 	"require-dev": {
