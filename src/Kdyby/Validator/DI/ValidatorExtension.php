@@ -11,6 +11,7 @@
 namespace Kdyby\Validator\DI;
 
 use Kdyby;
+use Kdyby\DoctrineCache\DI\Helpers;
 use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
@@ -33,8 +34,9 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 * @var array
 	 */
 	public $defaults = array(
-		'cache' => 'Kdyby\Validator\Caching\Cache',
+		'cache' => 'default',
 		'translationDomain' => NULL,
+		'debug' => '%debugMode%',
 	);
 
 
@@ -52,16 +54,18 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
 			->addTag(self::TAG_LOADER);
 
+		$cacheService = $builder->addDefinition($this->prefix('cache'))
+			->setClass('Symfony\Component\Validator\Mapping\Cache\CacheInterface');
+
 		$cacheFactory = self::filterArgs($config['cache']);
-		if (!class_exists($cacheFactory[0]->entity) || !in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->entity), TRUE)) {
-			throw new Nette\Utils\AssertionException(
-				'Expected implementation of Symfony\Component\Validator\Mapping\Cache\CacheInterface, ' .
-				'but ' . $cacheFactory[0]->entity  . ' given.'
-			);
+		if (class_exists($cacheFactory[0]->entity) && in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->entity), TRUE)) {
+			$cacheService->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
+		} else {
+			$cacheService->setFactory('Symfony\Component\Validator\Mapping\Cache\DoctrineCache', array(
+				Helpers::processCache($this, $config['cache'], 'validator'),
+				$config['debug']
+			));
 		}
-		$builder->addDefinition($this->prefix('cache'))
-			->setClass('Symfony\Component\Validator\Mapping\Cache\CacheInterface')
-			->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
 
 		$builder->addDefinition($this->prefix('metadataFactory'))
 			->setClass('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')
