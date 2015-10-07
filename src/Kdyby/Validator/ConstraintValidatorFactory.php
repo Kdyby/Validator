@@ -49,6 +49,11 @@ class ConstraintValidatorFactory extends Nette\Object implements ConstraintValid
 	{
 		$className = $constraint->validatedBy();
 
+		// Workaround for https://github.com/symfony/symfony/pull/16166.
+		if ($className === 'validator.expression') {
+			$className = 'Symfony\Component\Validator\Constraints\ExpressionValidator';
+		}
+
 		if (!isset($this->validators[$lClassName = ltrim(strtolower($className), '\\')])) {
 			if (!$validator = $this->serviceLocator->getByType($className, FALSE)) {
 				$validator = $this->serviceLocator->createInstance($className);
