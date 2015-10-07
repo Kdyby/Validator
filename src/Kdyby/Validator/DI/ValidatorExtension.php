@@ -62,8 +62,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			$cacheService->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
 		} else {
 			$cacheService->setFactory('Symfony\Component\Validator\Mapping\Cache\DoctrineCache', array(
-				Helpers::processCache($this, $config['cache'], 'validator'),
-				$config['debug']
+				Helpers::processCache($this, $config['cache'], 'validator', $config['debug']),
 			));
 		}
 
