@@ -34,7 +34,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 * @var array
 	 */
 	public $defaults = array(
-		'cache' => 'default',
+		'cache' => null,
 		'translationDomain' => NULL,
 		'debug' => '%debugMode%',
 	);
@@ -45,6 +45,10 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig($this->defaults);
+
+		if ($config['cache'] === null) {
+			$config['cache'] = $config['debug'] ? 'array' : 'filesystem';
+		}
 
 		$builder->addDefinition($this->prefix('loader'))
 			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
