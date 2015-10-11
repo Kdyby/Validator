@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Kdyby\Validation\Extension.
+ * Test: Kdyby\Validator\DI\ValidatorExtension.
  *
- * @testCase Kdyby\Validation\ExtensionTest
+ * @testCase Kdyby\Validator\ExtensionTest
  * @author Filip Procházka <filip@prochazka.su>
- * @package Kdyby\Validation
+ * @package Kdyby\Validator
  */
 
-namespace KdybyTests\Validation;
+namespace KdybyTests\Validator;
 
 use Kdyby;
 use Nette;
@@ -27,7 +27,7 @@ class ExtensionTest extends Tester\TestCase
 {
 
 	/**
-	 * @return \SystemContainer|Nette\DI\Container
+	 * @return Nette\DI\Container
 	 */
 	public function createContainer()
 	{
