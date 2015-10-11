@@ -22,6 +22,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class ExtensionTest extends Tester\TestCase
 {
@@ -61,6 +62,24 @@ class ExtensionTest extends Tester\TestCase
 		/** @var Symfony\Component\Validator\ConstraintViolationInterface[] $violations */
 		$violations = $validator->validate($article);
 		Tester\Assert::same(0, count($violations));
+	}
+
+
+
+	public function testConstraintValidatorFactory()
+	{
+		$container = $this->createContainer();
+
+		$factory = $container->getByType('Symfony\Component\Validator\ConstraintValidatorFactoryInterface');
+
+		// Validator without dependeny (created without DIC).
+		Tester\Assert::type('Symfony\Component\Validator\Constraints\BlankValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Blank()));
+
+		// ExpressionValidator (requires a special fix).
+		Tester\Assert::type('Symfony\Component\Validator\Constraints\ExpressionValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Expression(array('expression' => ''))));
+
+		// Custom validator with dependency (haa to be created by DIC).
+		Tester\Assert::type('KdybyTests\ValidatorMock\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMock\FooConstraint()));
 	}
 
 }
