@@ -15,20 +15,19 @@ use Kdyby\DoctrineCache\DI\Helpers;
 use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
-use Nette\Utils\Validators;
 
 
 
 /**
- * @author Jáchym Toušek
- * @author Michael Moravec
  * @author Filip Procházka <filip@prochazka.su>
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslationProvider
 {
 
 	const TAG_LOADER = 'kdyby.validator.loader';
 	const TAG_INITIALIZER = 'kdyby.validator.initializer';
+	const TAG_CONSTRAINT_VALIDATOR = 'kdyby.validator.constraintValidator';
 
 	/**
 	 * @var array
@@ -82,6 +81,13 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\Validator\ValidatorInterface')
 			->setFactory('Symfony\Component\Validator\Validator\RecursiveValidator');
+
+		$builder->addDefinition($this->prefix('constraint.expression'))
+			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
+			->addTag(self::TAG_CONSTRAINT_VALIDATOR, array(
+				'Symfony\Component\Validator\Constraints\ExpressionValidator',
+				'validator.expression', // @see https://github.com/symfony/symfony/pull/16166
+			));
 	}
 
 
@@ -107,6 +113,17 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setArguments(array(
 				'metadataFactory' => $this->prefix('@metadataFactory'),
 				'objectInitializers' => $initializers,
+			));
+
+		$validators = array();
+		foreach ($builder->findByTag(self::TAG_CONSTRAINT_VALIDATOR) as $service => $attributes) {
+			foreach ((array) $attributes as $name) {
+				$validators[$name] = (string) $service;
+			}
+		}
+		$builder->getDefinition($this->prefix('constraintValidatorFactory'))
+			->setArguments(array(
+				'validators' => $validators,
 			));
 	}
 

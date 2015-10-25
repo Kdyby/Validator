@@ -13,6 +13,10 @@ common:
 		cacheStorage:
 			class: Nette\Caching\Storages\MemoryStorage
 
+		-
+			class: KdybyTests\ValidatorMock\FooConstraintValidator
+			tags:
+				kdyby.validator.constraintValidator: KdybyTests\ValidatorMock\FooConstraintValidator
 
 v22 < common:
 	nette:

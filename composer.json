@@ -62,6 +62,11 @@
 			"Kdyby\\Validator": "src/"
 		}
 	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/KdybyTests"
+		]
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "0.3-dev"
