@@ -15,6 +15,7 @@ use Kdyby\DoctrineCache\DI\Helpers;
 use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
+use Nette\Utils\Validators;
 
 
 
@@ -36,6 +37,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		'cache' => 'default',
 		'translationDomain' => NULL,
 		'debug' => '%debugMode%',
+		'strictEmail' => FALSE,
 	);
 
 
@@ -81,6 +83,17 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\Validator\ValidatorInterface')
 			->setFactory('Symfony\Component\Validator\Validator\RecursiveValidator');
+
+		Validators::assertField($config, 'strictEmail', 'boolean');
+
+		$builder->addDefinition($this->prefix('constraint.email'))
+			->setClass('Symfony\Component\Validator\Constraints\EmailValidator')
+			->setArguments(array(
+				'strict' => $config['strictEmail'],
+			))
+			->addTag(self::TAG_CONSTRAINT_VALIDATOR, array(
+				'Symfony\Component\Validator\Constraints\EmailValidator',
+			));
 
 		$builder->addDefinition($this->prefix('constraint.expression'))
 			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
