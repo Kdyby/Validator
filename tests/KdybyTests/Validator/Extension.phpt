@@ -30,12 +30,15 @@ class ExtensionTest extends Tester\TestCase
 	/**
 	 * @return Nette\DI\Container
 	 */
-	public function createContainer()
+	public function createContainer($configFile = NULL)
 	{
 		$config = new Nette\Configurator();
 		$config->setTempDirectory(TEMP_DIR);
-		$config->addParameters(array('container' => array('class' => 'SystemContainer_' . md5(time()))));
+		$config->addParameters(array('container' => array('class' => 'SystemContainer_' . md5($configFile))));
 		$config->addConfig(__DIR__ . '/../nette-reset.neon', !isset($config->defaultExtensions['nette']) ? 'v23' : 'v22');
+		if ($configFile) {
+			$config->addConfig(__DIR__ . '/config/' . $configFile . '.neon', FALSE);
+		}
 
 		return $config->createContainer();
 	}
@@ -80,6 +83,36 @@ class ExtensionTest extends Tester\TestCase
 
 		// Custom validator with dependency (haa to be created by DIC).
 		Tester\Assert::type('KdybyTests\ValidatorMock\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMock\FooConstraint()));
+	}
+
+
+
+	public function strictEmailDataProvider()
+	{
+		return array(
+			array(NULL, FALSE),
+			array('strict-email', TRUE),
+			array('non-strict-email', FALSE),
+		);
+	}
+
+
+
+	/**
+	 * @dataProvider strictEmailDataProvider
+	 */
+	public function testStrictEmail($configFile, $strict)
+	{
+		$container = $this->createContainer($configFile);
+
+		$factory = $container->getByType('Symfony\Component\Validator\ConstraintValidatorFactoryInterface');
+
+		$validator = $factory->getInstance(new \Symfony\Component\Validator\Constraints\Email());
+		Tester\Assert::type('Symfony\Component\Validator\Constraints\EmailValidator', $validator);
+
+		$property = new \ReflectionProperty('Symfony\Component\Validator\Constraints\EmailValidator', 'isStrict');
+		$property->setAccessible(TRUE);
+		Tester\Assert::same($strict, $property->getValue($validator));
 	}
 
 }
