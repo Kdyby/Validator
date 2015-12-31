@@ -164,7 +164,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 */
 	private static function filterArgs($statement)
 	{
-		return Nette\DI\Compiler::filterArguments(array(is_string($statement) ? new Nette\DI\Statement($statement) : $statement));
+		return Compiler::filterArguments(array(is_string($statement) ? new Nette\DI\Statement($statement) : $statement));
 	}
 
 
