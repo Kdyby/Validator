@@ -99,7 +99,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
 			->addTag(self::TAG_CONSTRAINT_VALIDATOR, array(
 				'Symfony\Component\Validator\Constraints\ExpressionValidator',
-				'validator.expression', // @see https://github.com/symfony/symfony/pull/16166
+				'validator.expression', // @link https://github.com/symfony/symfony/pull/16166
 			));
 	}
 
