@@ -25,7 +25,6 @@
 	},
 	"require": {
 		"nette/di": "~2.2@dev",
-		"nette/caching": "~2.2@dev",
 		"nette/utils": "~2.2@dev",
 
 		"symfony/validator": ">=2.5.3",
@@ -70,7 +69,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "0.3-dev"
+			"dev-master": "0.4-dev"
 		}
 	}
 }
