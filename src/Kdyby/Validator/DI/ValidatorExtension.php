@@ -59,8 +59,8 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setClass('Symfony\Component\Validator\Mapping\Cache\CacheInterface');
 
 		$cacheFactory = self::filterArgs($config['cache']);
-		if (class_exists($cacheFactory[0]->entity) && in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->entity), TRUE)) {
-			$cacheService->setFactory($cacheFactory[0]->entity, $cacheFactory[0]->arguments);
+		if (class_exists($cacheFactory[0]->getEntity()) && in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->getEntity()), TRUE)) {
+			$cacheService->setFactory($cacheFactory[0]->getEntity(), $cacheFactory[0]->arguments);
 		} else {
 			$cacheService->setFactory('Symfony\Component\Validator\Mapping\Cache\DoctrineCache', array(
 				Helpers::processCache($this, $config['cache'], 'validator', $config['debug']),
