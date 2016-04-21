@@ -37,7 +37,7 @@ class ExtensionTest extends Tester\TestCase
 		$config->addParameters(['container' => ['class' => 'SystemContainer_' . md5($configFile)]]);
 		$config->addConfig(__DIR__ . '/../nette-reset.neon');
 		if ($configFile) {
-			$config->addConfig(__DIR__ . '/config/' . $configFile . '.neon', FALSE);
+			$config->addConfig(__DIR__ . '/config/' . $configFile . '.neon');
 		}
 
 		return $config->createContainer();
