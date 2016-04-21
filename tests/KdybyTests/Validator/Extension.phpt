@@ -34,7 +34,7 @@ class ExtensionTest extends Tester\TestCase
 	{
 		$config = new Nette\Configurator();
 		$config->setTempDirectory(TEMP_DIR);
-		$config->addParameters(array('container' => array('class' => 'SystemContainer_' . md5($configFile))));
+		$config->addParameters(['container' => ['class' => 'SystemContainer_' . md5($configFile)]]);
 		$config->addConfig(__DIR__ . '/../nette-reset.neon', !isset($config->defaultExtensions['nette']) ? 'v23' : 'v22');
 		if ($configFile) {
 			$config->addConfig(__DIR__ . '/config/' . $configFile . '.neon', FALSE);
@@ -79,7 +79,7 @@ class ExtensionTest extends Tester\TestCase
 		Tester\Assert::type('Symfony\Component\Validator\Constraints\BlankValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Blank()));
 
 		// ExpressionValidator (requires a special fix).
-		Tester\Assert::type('Symfony\Component\Validator\Constraints\ExpressionValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Expression(array('expression' => ''))));
+		Tester\Assert::type('Symfony\Component\Validator\Constraints\ExpressionValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Expression(['expression' => ''])));
 
 		// Custom validator with dependency (haa to be created by DIC).
 		Tester\Assert::type('KdybyTests\ValidatorMock\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMock\FooConstraint()));
@@ -89,11 +89,11 @@ class ExtensionTest extends Tester\TestCase
 
 	public function strictEmailDataProvider()
 	{
-		return array(
-			array(NULL, FALSE),
-			array('strict-email', TRUE),
-			array('non-strict-email', FALSE),
-		);
+		return [
+			[NULL, FALSE],
+			['strict-email', TRUE],
+			['non-strict-email', FALSE],
+		];
 	}
 
 

@@ -33,12 +33,12 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	/**
 	 * @var array
 	 */
-	public $defaults = array(
+	public $defaults = [
 		'cache' => 'default',
 		'translationDomain' => NULL,
 		'debug' => '%debugMode%',
 		'strictEmail' => FALSE,
-	);
+	];
 
 
 
@@ -62,9 +62,9 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		if (class_exists($cacheFactory[0]->getEntity()) && in_array('Symfony\Component\Validator\Mapping\Cache\CacheInterface', class_implements($cacheFactory[0]->getEntity()), TRUE)) {
 			$cacheService->setFactory($cacheFactory[0]->getEntity(), $cacheFactory[0]->arguments);
 		} else {
-			$cacheService->setFactory('Symfony\Component\Validator\Mapping\Cache\DoctrineCache', array(
+			$cacheService->setFactory('Symfony\Component\Validator\Mapping\Cache\DoctrineCache', [
 				Helpers::processCache($this, $config['cache'], 'validator', $config['debug']),
-			));
+			]);
 		}
 
 		$builder->addDefinition($this->prefix('metadataFactory'))
@@ -78,7 +78,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 
 		$builder->addDefinition($this->prefix('contextFactory'))
 			->setClass('Symfony\Component\Validator\Context\ExecutionContextFactoryInterface')
-			->setFactory('Symfony\Component\Validator\Context\ExecutionContextFactory', array('translationDomain' => $config['translationDomain']));
+			->setFactory('Symfony\Component\Validator\Context\ExecutionContextFactory', ['translationDomain' => $config['translationDomain']]);
 
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\Validator\ValidatorInterface')
@@ -88,19 +88,19 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 
 		$builder->addDefinition($this->prefix('constraint.email'))
 			->setClass('Symfony\Component\Validator\Constraints\EmailValidator')
-			->setArguments(array(
+			->setArguments([
 				'strict' => $config['strictEmail'],
-			))
-			->addTag(self::TAG_CONSTRAINT_VALIDATOR, array(
+			])
+			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
 				'Symfony\Component\Validator\Constraints\EmailValidator',
-			));
+			]);
 
 		$builder->addDefinition($this->prefix('constraint.expression'))
 			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
-			->addTag(self::TAG_CONSTRAINT_VALIDATOR, array(
+			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
 				'Symfony\Component\Validator\Constraints\ExpressionValidator',
 				'validator.expression', // @link https://github.com/symfony/symfony/pull/16166
-			));
+			]);
 	}
 
 
@@ -109,35 +109,35 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	{
 		$builder = $this->getContainerBuilder();
 
-		$loaders = array();
+		$loaders = [];
 		foreach (array_keys($builder->findByTag(self::TAG_LOADER)) as $service) {
 			$builder->getDefinition($service)
 				->setAutowired(FALSE);
 			$loaders[] = '@' . $service;
 		}
 		$builder->getDefinition($this->prefix('loader'))
-			->setArguments(array($loaders));
+			->setArguments([$loaders]);
 
-		$initializers = array();
+		$initializers = [];
 		foreach (array_keys($builder->findByTag(self::TAG_INITIALIZER)) as $service) {
 			$initializers[] = '@' . $service;
 		}
 		$builder->getDefinition($this->prefix('validator'))
-			->setArguments(array(
+			->setArguments([
 				'metadataFactory' => $this->prefix('@metadataFactory'),
 				'objectInitializers' => $initializers,
-			));
+			]);
 
-		$validators = array();
+		$validators = [];
 		foreach ($builder->findByTag(self::TAG_CONSTRAINT_VALIDATOR) as $service => $attributes) {
 			foreach ((array) $attributes as $name) {
 				$validators[$name] = (string) $service;
 			}
 		}
 		$builder->getDefinition($this->prefix('constraintValidatorFactory'))
-			->setArguments(array(
+			->setArguments([
 				'validators' => $validators,
-			));
+			]);
 	}
 
 
@@ -151,9 +151,9 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	{
 		$validatorClass = new \ReflectionClass('Symfony\Component\Validator\Constraint');
 
-		return array(
+		return [
 			dirname($validatorClass->getFileName()) . '/Resources/translations',
-		);
+		];
 	}
 
 
@@ -164,7 +164,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 	 */
 	private static function filterArgs($statement)
 	{
-		return Compiler::filterArguments(array(is_string($statement) ? new Nette\DI\Statement($statement) : $statement));
+		return Compiler::filterArguments([is_string($statement) ? new Nette\DI\Statement($statement) : $statement]);
 	}
 
 
