@@ -1,34 +1,24 @@
-common:
-	php:
-		date.timezone: Europe/Prague
+php:
+	date.timezone: Europe/Prague
 
 
-	extensions:
-		annotations: Kdyby\Annotations\DI\AnnotationsExtension
-		translation: Kdyby\Translation\DI\TranslationExtension
-		validator: Kdyby\Validator\DI\ValidatorExtension
+extensions:
+	annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	translation: Kdyby\Translation\DI\TranslationExtension
+	validator: Kdyby\Validator\DI\ValidatorExtension
 
 
-	services:
-		cacheStorage:
-			class: Nette\Caching\Storages\MemoryStorage
+services:
+	cacheStorage:
+		class: Nette\Caching\Storages\MemoryStorage
 
-		-
-			class: KdybyTests\ValidatorMock\FooConstraintValidator
-			tags:
-				kdyby.validator.constraintValidator: KdybyTests\ValidatorMock\FooConstraintValidator
+	-
+		class: KdybyTests\ValidatorMock\FooConstraintValidator
+		tags:
+			kdyby.validator.constraintValidator: KdybyTests\ValidatorMock\FooConstraintValidator
 
-v22 < common:
-	nette:
-		security:
-			frames: null
+http:
+	frames: null
 
-		session:
-			autoStart: false
-
-v23 < common:
-	http:
-		frames: null
-
-	session:
-		autoStart: false
+session:
+	autoStart: false
