@@ -28,7 +28,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 
 	const TAG_LOADER = 'kdyby.validator.loader';
 	const TAG_INITIALIZER = 'kdyby.validator.initializer';
-	const TAG_CONSTRAINT_VALIDATOR = 'kdyby.validator.constraintValidator';
 
 	/**
 	 * @var array
@@ -90,16 +89,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setClass('Symfony\Component\Validator\Constraints\EmailValidator')
 			->setArguments([
 				'strict' => $config['strictEmail'],
-			])
-			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
-				'Symfony\Component\Validator\Constraints\EmailValidator',
-			]);
-
-		$builder->addDefinition($this->prefix('constraint.expression'))
-			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
-			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
-				'Symfony\Component\Validator\Constraints\ExpressionValidator',
-				'validator.expression', // @link https://github.com/symfony/symfony/pull/16166
 			]);
 	}
 
@@ -126,17 +115,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setArguments([
 				'metadataFactory' => $this->prefix('@metadataFactory'),
 				'objectInitializers' => $initializers,
-			]);
-
-		$validators = [];
-		foreach ($builder->findByTag(self::TAG_CONSTRAINT_VALIDATOR) as $service => $attributes) {
-			foreach ((array) $attributes as $name) {
-				$validators[$name] = (string) $service;
-			}
-		}
-		$builder->getDefinition($this->prefix('constraintValidatorFactory'))
-			->setArguments([
-				'validators' => $validators,
 			]);
 	}
 

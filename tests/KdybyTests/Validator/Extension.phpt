@@ -69,24 +69,6 @@ class ExtensionTest extends Tester\TestCase
 
 
 
-	public function testConstraintValidatorFactory()
-	{
-		$container = $this->createContainer();
-
-		$factory = $container->getByType('Symfony\Component\Validator\ConstraintValidatorFactoryInterface');
-
-		// Validator without dependeny (created without DIC).
-		Tester\Assert::type('Symfony\Component\Validator\Constraints\BlankValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Blank()));
-
-		// ExpressionValidator (requires a special fix).
-		Tester\Assert::type('Symfony\Component\Validator\Constraints\ExpressionValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Expression(['expression' => ''])));
-
-		// Custom validator with dependency (haa to be created by DIC).
-		Tester\Assert::type('KdybyTests\ValidatorMock\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMock\FooConstraint()));
-	}
-
-
-
 	public function strictEmailDataProvider()
 	{
 		return [
