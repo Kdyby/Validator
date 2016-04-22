@@ -10,8 +10,8 @@
 
 namespace Kdyby\Validator;
 
+use Kdyby;
 use Nette;
-use Nette\DI\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
@@ -19,26 +19,24 @@ use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
- * @author Jáchym Toušek <enumag@gmail.com>
  */
 class ConstraintValidatorFactory extends Nette\Object implements ConstraintValidatorFactoryInterface
 {
 
 	/**
-	 * @var Container
+	 * @var Nette\DI\Container
 	 */
 	private $serviceLocator;
 
 	/**
 	 * @var array
 	 */
-	private $validators;
+	private $validators = array();
 
 
 
-	public function __construct(array $validators, Container $serviceLocator)
+	public function __construct(Nette\DI\Container $serviceLocator)
 	{
-		$this->validators = $validators;
 		$this->serviceLocator = $serviceLocator;
 	}
 
@@ -49,15 +47,22 @@ class ConstraintValidatorFactory extends Nette\Object implements ConstraintValid
 	 */
 	public function getInstance(Constraint $constraint)
 	{
-		$name = $constraint->validatedBy();
+		$className = $constraint->validatedBy();
 
-		if (!isset($this->validators[$name])) {
-			$this->validators[$name] = new $name();
-		} elseif (is_string($this->validators[$name])) {
-			$this->validators[$name] = $this->serviceLocator->getService($this->validators[$name]);
+		// Workaround for https://github.com/symfony/symfony/pull/16166.
+		if ($className === 'validator.expression') {
+			$className = 'Symfony\Component\Validator\Constraints\ExpressionValidator';
 		}
 
-		return $this->validators[$name];
+		if (!isset($this->validators[$lClassName = ltrim(strtolower($className), '\\')])) {
+			if (!$validator = $this->serviceLocator->getByType($className, FALSE)) {
+				$validator = $this->serviceLocator->createInstance($className);
+			}
+
+			$this->validators[$lClassName] = $validator;
+		}
+
+		return $this->validators[$lClassName];
 	}
 
 }
