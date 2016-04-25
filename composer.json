@@ -28,11 +28,12 @@
 		"nette/utils": "~2.3@dev",
 
 		"symfony/validator": ">=2.5.3",
-		"kdyby/annotations": "~2.2@dev",
 		"kdyby/doctrine-cache": "~2.4@dev",
 		"kdyby/translation": "~2.2@dev"
 	},
 	"require-dev": {
+		"kdyby/annotations": "~2.2@dev",
+		"symfony/yaml": "^2.8|^3.0",
 		"nette/application": "~2.3@dev",
 		"nette/bootstrap": "~2.3@dev",
 		"nette/caching": "~2.3@dev",

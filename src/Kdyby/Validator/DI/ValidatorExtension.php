@@ -51,10 +51,6 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setClass('Symfony\Component\Validator\Mapping\Loader\LoaderInterface')
 			->setFactory('Symfony\Component\Validator\Mapping\Loader\LoaderChain');
 
-		$builder->addDefinition($this->prefix('annotationsLoader'))
-			->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
-			->addTag(self::TAG_LOADER);
-
 		$cacheService = $builder->addDefinition($this->prefix('cache'))
 			->setClass('Symfony\Component\Validator\Mapping\Cache\CacheInterface');
 
@@ -101,6 +97,12 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 				'Symfony\Component\Validator\Constraints\ExpressionValidator',
 				'validator.expression', // @link https://github.com/symfony/symfony/pull/16166
 			]);
+
+		if ($this->compiler->getExtensions('Kdyby\Annotations\DI\AnnotationsExtension')) {
+			$builder->addDefinition($this->prefix('annotationsLoader'))
+				->setFactory('Symfony\Component\Validator\Mapping\Loader\AnnotationLoader')
+				->addTag(self::TAG_LOADER);
+		}
 	}
 
 
