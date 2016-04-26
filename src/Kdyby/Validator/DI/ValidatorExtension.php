@@ -91,14 +91,11 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setArguments([
 				'strict' => $config['strictEmail'],
 			])
-			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
-				'Symfony\Component\Validator\Constraints\EmailValidator',
-			]);
+			->addTag(self::TAG_CONSTRAINT_VALIDATOR);
 
 		$builder->addDefinition($this->prefix('constraint.expression'))
 			->setClass('Symfony\Component\Validator\Constraints\ExpressionValidator')
 			->addTag(self::TAG_CONSTRAINT_VALIDATOR, [
-				'Symfony\Component\Validator\Constraints\ExpressionValidator',
 				'validator.expression', // @link https://github.com/symfony/symfony/pull/16166
 			]);
 	}
@@ -133,6 +130,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			foreach ((array) $attributes as $name) {
 				$validators[$name] = (string) $service;
 			}
+			$validators[(new \ReflectionClass($builder->getDefinition($service)->getClass()))->getName()] = (string) $service;
 		}
 		$builder->getDefinition($this->prefix('constraintValidatorFactory'))
 			->setArguments([
