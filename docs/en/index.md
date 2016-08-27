@@ -7,10 +7,11 @@ This extension is here to integrate [Symfony/Validator](https://github.com/Symfo
 Installation
 -----------
 
-The best way to install Kdyby/Validator is using [Composer](http://getcomposer.org/):
+The best way to install Kdyby/Validator is using [Composer](http://getcomposer.org/). It is recommended to install [Kdyby/Annotations](https://github.com/Kdyby/Annotations) as well.
 
 ```sh
-$ composer require Kdyby/Validator:@dev
+$ composer require kdyby/annotations
+$ composer require kdyby/validator
 ```
 
 Now you need to register Kdyby/Validator, [Kdyby/Annotations](https://github.com/Kdyby/Annotations)

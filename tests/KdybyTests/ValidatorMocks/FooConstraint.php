@@ -1,6 +1,6 @@
 <?php
 
-namespace KdybyTests\ValidatorMock;
+namespace KdybyTests\ValidatorMocks;
 
 use Symfony\Component\Validator\Constraint;
 

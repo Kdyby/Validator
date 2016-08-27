@@ -21,10 +21,11 @@ Kdyby/Validator requires PHP 5.4.0 or higher.
 Installation
 ------------
 
-The best way to install Kdyby/Validator is using  [Composer](http://getcomposer.org/):
+The best way to install Kdyby/Validator is using [Composer](http://getcomposer.org/). It is recommended to install [Kdyby/Annotations](https://github.com/Kdyby/Annotations) as well.
 
 ```sh
-$ composer require kdyby/validator:@dev
+$ composer require kdyby/annotations
+$ composer require kdyby/validator
 ```
 
 

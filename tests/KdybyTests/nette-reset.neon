@@ -3,7 +3,6 @@ php:
 
 
 extensions:
-	annotations: Kdyby\Annotations\DI\AnnotationsExtension
 	translation: Kdyby\Translation\DI\TranslationExtension
 	validator: Kdyby\Validator\DI\ValidatorExtension
 
@@ -13,9 +12,9 @@ services:
 		class: Nette\Caching\Storages\MemoryStorage
 
 	-
-		class: KdybyTests\ValidatorMock\FooConstraintValidator
+		class: KdybyTests\ValidatorMocks\FooConstraintValidator
 		tags:
-			kdyby.validator.constraintValidator: KdybyTests\ValidatorMock\FooConstraintValidator
+			kdyby.validator.constraintValidator: KdybyTests\ValidatorMocks\FooConstraintValidator
 
 http:
 	frames: null

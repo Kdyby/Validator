@@ -1,0 +1,7 @@
+services:
+	loader:
+		class: Symfony\Component\Validator\Mapping\Loader\YamlFileLoader
+		arguments:
+			- %appDir%/Validator/config/mapping.yml
+		tags:
+			- kdyby.validator.loader

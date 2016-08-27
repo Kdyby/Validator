@@ -1,0 +1,2 @@
+extensions:
+	annotations: Kdyby\Annotations\DI\AnnotationsExtension

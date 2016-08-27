@@ -1,0 +1,4 @@
+KdybyTests\ValidatorMocks\ArticleMock:
+    properties:
+        title:
+            - Email: ~

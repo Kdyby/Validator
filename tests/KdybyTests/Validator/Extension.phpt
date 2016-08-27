@@ -11,9 +11,9 @@
 namespace KdybyTests\Validator;
 
 use Kdyby;
+use KdybyTests\ValidatorMocks\ArticleMock;
 use Nette;
 use Symfony;
-use Symfony\Component\Validator\Constraints as Assert;
 use Tester;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -30,14 +30,18 @@ class ExtensionTest extends Tester\TestCase
 	/**
 	 * @return Nette\DI\Container
 	 */
-	public function createContainer($configFile = NULL)
+	public function createContainer(array $files = [])
 	{
+		$rootDir = __DIR__ . '/..';
+
 		$config = new Nette\Configurator();
-		$config->setTempDirectory(TEMP_DIR);
-		$config->addParameters(['container' => ['class' => 'SystemContainer_' . md5($configFile)]]);
+		$config->setTempDirectory(TEMP_DIR)
+			->addParameters([
+				'appDir' => $rootDir,
+			]);
 		$config->addConfig(__DIR__ . '/../nette-reset.neon');
-		if ($configFile) {
-			$config->addConfig(__DIR__ . '/config/' . $configFile . '.neon');
+		foreach ($files as $file) {
+			$config->addConfig($file);
 		}
 
 		return $config->createContainer();
@@ -47,7 +51,7 @@ class ExtensionTest extends Tester\TestCase
 
 	public function testFunctionality()
 	{
-		$container = $this->createContainer();
+		$container = $this->createContainer([__DIR__ . '/config/annotations.neon']);
 
 		/** @var Symfony\Component\Validator\Validator\ValidatorInterface $validator */
 		$validator = $container->getByType('Symfony\Component\Validator\Validator\ValidatorInterface');
@@ -69,6 +73,30 @@ class ExtensionTest extends Tester\TestCase
 
 
 
+	public function testWithoutAnnotations()
+	{
+		$container = $this->createContainer([__DIR__ . '/config/custom-loader.neon']);
+
+		/** @var Symfony\Component\Validator\Validator\ValidatorInterface $validator */
+		$validator = $container->getByType('Symfony\Component\Validator\Validator\ValidatorInterface');
+		Tester\Assert::true($validator instanceof Symfony\Component\Validator\Validator\RecursiveValidator);
+
+		$article = new ArticleMock();
+
+		/** @var Symfony\Component\Validator\ConstraintViolationInterface[] $violations */
+		$violations = $validator->validate($article);
+		Tester\Assert::same(0, count($violations));
+
+		$article->title = "Nette Framework + Symfony/Validator";
+
+		/** @var Symfony\Component\Validator\ConstraintViolationInterface[] $violations */
+		$violations = $validator->validate($article);
+		Tester\Assert::same(1, count($violations));
+		Tester\Assert::same('This value is not a valid email address.', $violations[0]->getMessage());
+	}
+
+
+
 	public function testConstraintValidatorFactory()
 	{
 		$container = $this->createContainer();
@@ -82,7 +110,7 @@ class ExtensionTest extends Tester\TestCase
 		Tester\Assert::type('Symfony\Component\Validator\Constraints\ExpressionValidator', $factory->getInstance(new \Symfony\Component\Validator\Constraints\Expression(['expression' => ''])));
 
 		// Custom validator with dependency (haa to be created by DIC).
-		Tester\Assert::type('KdybyTests\ValidatorMock\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMock\FooConstraint()));
+		Tester\Assert::type('KdybyTests\ValidatorMocks\FooConstraintValidator', $factory->getInstance(new \KdybyTests\ValidatorMocks\FooConstraint()));
 	}
 
 
@@ -90,9 +118,9 @@ class ExtensionTest extends Tester\TestCase
 	public function strictEmailDataProvider()
 	{
 		return [
-			[NULL, FALSE],
-			['strict-email', TRUE],
-			['non-strict-email', FALSE],
+			[[], FALSE],
+			[[__DIR__ . '/config/strict-email.neon'], TRUE],
+			[[__DIR__ . '/config/non-strict-email.neon'], FALSE],
 		];
 	}
 
@@ -101,9 +129,9 @@ class ExtensionTest extends Tester\TestCase
 	/**
 	 * @dataProvider strictEmailDataProvider
 	 */
-	public function testStrictEmail($configFile, $strict)
+	public function testStrictEmail($configFiles, $strict)
 	{
-		$container = $this->createContainer($configFile);
+		$container = $this->createContainer($configFiles);
 
 		$factory = $container->getByType('Symfony\Component\Validator\ConstraintValidatorFactoryInterface');
 
@@ -118,15 +146,5 @@ class ExtensionTest extends Tester\TestCase
 }
 
 
-class ArticleMock extends Nette\Object
-{
-
-	/**
-	 * @Assert\NotNull()
-	 * @var string
-	 */
-	public $title;
-
-}
 
 \run(new ExtensionTest());
