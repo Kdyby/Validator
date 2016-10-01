@@ -24,8 +24,7 @@ Installation
 The best way to install Kdyby/Validator is using [Composer](http://getcomposer.org/). It is recommended to install [Kdyby/Annotations](https://github.com/Kdyby/Annotations) as well.
 
 ```sh
-$ composer require kdyby/annotations
-$ composer require kdyby/validator
+$ composer require kdyby/validator kdyby/annotations
 ```
 
 
