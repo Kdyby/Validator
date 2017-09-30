@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
  * @author Filip Procházka <filip@prochazka.su>
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class ConstraintValidatorFactory extends Nette\Object implements ConstraintValidatorFactoryInterface
+class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 {
 
 	/**

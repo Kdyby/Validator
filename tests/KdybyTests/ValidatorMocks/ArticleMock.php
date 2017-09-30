@@ -2,10 +2,9 @@
 
 namespace KdybyTests\ValidatorMocks;
 
-use Nette\Object;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ArticleMock extends Object
+class ArticleMock
 {
 
 	/**
