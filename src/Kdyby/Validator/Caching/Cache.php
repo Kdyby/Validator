@@ -12,7 +12,6 @@ namespace Kdyby\Validator\Caching;
 
 use Nette;
 use Nette\Caching\Cache AS NCache;
-use Nette\Object;
 use Symfony\Component\Validator\Mapping\Cache\CacheInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -23,7 +22,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * @author Jáchym Toušek
  * @deprecated Use Symfony\Component\Validator\Mapping\Cache\DoctrineCache and kdyby/doctrine-cache instead.
  */
-class Cache extends Object implements CacheInterface
+class Cache implements CacheInterface
 {
 
 	const CACHE_NS = 'Validator';
