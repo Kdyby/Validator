@@ -82,7 +82,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 			->setFactory('Symfony\Component\Validator\Validator\RecursiveValidator');
 
 		//BC
-		if ($config !== NULL) {
+		if ($config['strictEmail'] !== NULL) {
 		    Validators::assertField($config, 'strictEmail', 'boolean');
 		    trigger_error('`strictEmail` configuration option is deprecated, use `emailValidationMode` instead.', E_USER_DEPRECATED);
 		    $config['emailValidationMode'] = \Symfony\Component\Validator\Constraints\Email::VALIDATION_MODE_LOOSE;
