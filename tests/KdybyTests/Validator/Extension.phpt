@@ -15,6 +15,7 @@ use KdybyTests\ValidatorMocks\ArticleMock;
 use Nette;
 use Symfony;
 use Tester;
+use Symfony\Component\Validator\Constraints\Email;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -118,9 +119,9 @@ class ExtensionTest extends Tester\TestCase
 	public function strictEmailDataProvider()
 	{
 		return [
-			[[], 'loose'],
-			[[__DIR__ . '/config/strict-email.neon'], 'strict'],
-			[[__DIR__ . '/config/non-strict-email.neon'], 'loose'],
+			[[], Email::VALIDATION_MODE_LOOSE],
+			[[__DIR__ . '/config/strict-email.neon'], Email::VALIDATION_MODE_STRICT],
+			[[__DIR__ . '/config/non-strict-email.neon'], Email::VALIDATION_MODE_LOOSE],
 		];
 	}
 
