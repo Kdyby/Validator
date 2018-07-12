@@ -16,7 +16,7 @@ use Kdyby\Translation\DI\ITranslationProvider;
 use Nette;
 use Nette\DI\Compiler;
 use Nette\Utils\Validators;
-
+use Symfony\Component\Validator\Constraints\Email;
 
 
 /**
@@ -84,7 +84,7 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 		if ($config['strictEmail'] !== NULL) {
             Validators::assertField($config, 'strictEmail', 'boolean');
             trigger_error('`strictEmail` configuration option is deprecated, use `emailValidationMode` instead.', E_USER_DEPRECATED);
-            $config['emailValidationMode'] = \Symfony\Component\Validator\Constraints\Email::VALIDATION_MODE_LOOSE;
+            $config['emailValidationMode'] = Email::VALIDATION_MODE_LOOSE;
         }
 
         Validators::assertField($config, 'emailValidationMode', 'string');

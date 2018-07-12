@@ -118,9 +118,9 @@ class ExtensionTest extends Tester\TestCase
 	public function strictEmailDataProvider()
 	{
 		return [
-			[[], FALSE],
-			[[__DIR__ . '/config/strict-email.neon'], TRUE],
-			[[__DIR__ . '/config/non-strict-email.neon'], FALSE],
+			[[], 'loose'],
+			[[__DIR__ . '/config/strict-email.neon'], 'strict'],
+			[[__DIR__ . '/config/non-strict-email.neon'], 'loose'],
 		];
 	}
 
@@ -138,7 +138,8 @@ class ExtensionTest extends Tester\TestCase
 		$validator = $factory->getInstance(new \Symfony\Component\Validator\Constraints\Email());
 		Tester\Assert::type('Symfony\Component\Validator\Constraints\EmailValidator', $validator);
 
-		$property = new \ReflectionProperty('Symfony\Component\Validator\Constraints\EmailValidator', 'isStrict');
+		$property = new \ReflectionProperty('Symfony\Component\Validator\Constraints\EmailValidator', 'defaultMode');
+
 		$property->setAccessible(TRUE);
 		Tester\Assert::same($strict, $property->getValue($validator));
 	}
