@@ -15,6 +15,7 @@ use KdybyTests\ValidatorMocks\ArticleMock;
 use Nette;
 use Symfony;
 use Tester;
+use Symfony\Component\Validator\Constraints\Email;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -118,9 +119,9 @@ class ExtensionTest extends Tester\TestCase
 	public function strictEmailDataProvider()
 	{
 		return [
-			[[], FALSE],
-			[[__DIR__ . '/config/strict-email.neon'], TRUE],
-			[[__DIR__ . '/config/non-strict-email.neon'], FALSE],
+			[[], Email::VALIDATION_MODE_LOOSE],
+			[[__DIR__ . '/config/strict-email.neon'], Email::VALIDATION_MODE_STRICT],
+			[[__DIR__ . '/config/non-strict-email.neon'], Email::VALIDATION_MODE_LOOSE],
 		];
 	}
 
@@ -138,7 +139,8 @@ class ExtensionTest extends Tester\TestCase
 		$validator = $factory->getInstance(new \Symfony\Component\Validator\Constraints\Email());
 		Tester\Assert::type('Symfony\Component\Validator\Constraints\EmailValidator', $validator);
 
-		$property = new \ReflectionProperty('Symfony\Component\Validator\Constraints\EmailValidator', 'isStrict');
+		$property = new \ReflectionProperty('Symfony\Component\Validator\Constraints\EmailValidator', 'defaultMode');
+
 		$property->setAccessible(TRUE);
 		Tester\Assert::same($strict, $property->getValue($validator));
 	}
