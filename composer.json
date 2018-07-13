@@ -24,10 +24,11 @@
 		"issues": "https://github.com/kdyby/validator/issues"
 	},
 	"require": {
+		"php": "^7.1",
 		"nette/di": "~2.4@dev",
 		"nette/utils": "~2.4@dev",
 
-		"symfony/validator": ">=2.5.3",
+		"symfony/validator": ">=4.1.0",
 		"kdyby/doctrine-cache": "~2.4@dev",
 		"kdyby/translation": "~2.2@dev"
 	},
@@ -37,7 +38,7 @@
 		"nette/application": "~2.4@dev",
 		"nette/bootstrap": "~2.4@dev",
 		"nette/caching": "~2.4@dev",
-		"nette/component-model": "~2.2@dev",
+		"nette/component-model": "~2.4@dev",
 		"nette/database": "~2.4@dev",
 		"nette/deprecated": "~2.4@dev",
 		"nette/di": "~2.4@dev",
@@ -49,9 +50,7 @@
 		"nette/php-generator": "~2.4@dev",
 		"nette/reflection": "~2.4@dev",
 		"nette/robot-loader": "~2.4@dev",
-		"nette/safe-stream": "~2.4@dev",
 		"nette/security": "~2.4@dev",
-		"nette/tokenizer": "~2.4@dev",
 		"nette/utils": "~2.4@dev",
 		"latte/latte": "~2.4@dev",
 		"tracy/tracy": "~2.4@dev",
