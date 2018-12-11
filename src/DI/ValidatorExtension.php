@@ -75,7 +75,10 @@ class ValidatorExtension extends Nette\DI\CompilerExtension implements ITranslat
 
 		$builder->addDefinition($this->prefix('contextFactory'))
 			->setClass('Symfony\Component\Validator\Context\ExecutionContextFactoryInterface')
-			->setFactory('Symfony\Component\Validator\Context\ExecutionContextFactory', ['translationDomain' => $config['translationDomain']]);
+			->setFactory('Symfony\Component\Validator\Context\ExecutionContextFactory', [
+				'translator' => '@Symfony\Component\Translation\TranslatorInterface',
+				'translationDomain' => $config['translationDomain'],
+			]);
 
 		$builder->addDefinition($this->prefix('validator'))
 			->setClass('Symfony\Component\Validator\Validator\ValidatorInterface')
