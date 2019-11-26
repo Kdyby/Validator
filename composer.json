@@ -28,7 +28,7 @@
 		"nette/di": "~2.4@dev",
 		"nette/utils": "~2.4@dev",
 
-		"symfony/validator": ">=4.1.0",
+		"symfony/validator": ">=4.1.0 <4.4",
 		"kdyby/doctrine-cache": "~2.4@dev",
 		"kdyby/translation": "~2.2@dev"
 	},
